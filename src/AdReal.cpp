@@ -4,7 +4,7 @@
 
 
 
-int main() {
+int main2() {
 	const std::string video_filename = "/home/tanmay/Downloads/video_simple.mp4";
 	// read video
 	cv::VideoCapture capture(video_filename);
