@@ -10,6 +10,7 @@ int main() {
 	cv::VideoCapture capture(video_filename);
 	if(!capture.isOpened()) {
 		std::cout << "Video file could not be opened" << std::endl;
+		return -1;
 	}
 
 	// Create window to display video frames
@@ -22,6 +23,13 @@ int main() {
 			std::cout << "Finished processing the video" << std::endl;
 			break;
 		}
+
+		/*
+		 *
+		 * Detection and Tracking Code goes here
+		 *
+		 */
+
 		cv::imshow("AdReal",frame);
 		cv::waitKey(1);
 	}
