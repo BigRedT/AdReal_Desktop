@@ -1,21 +1,29 @@
-//============================================================================
-// Name        : AdReal.cpp
-// Author      : 
-// Version     :
-// Copyright   : Your copyright notice
-// Description : Hello World in C++, Ansi-style
-//============================================================================
-
 #include <iostream>
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
-#include <opencv2/imgcodecs.hpp>
+
 
 
 int main() {
-	cv::Mat img;
-	cv::namedWindow("Something",1);
+	const std::string video_filename = "/home/tanmay/Downloads/video_simple.mp4";
+	// read video
+	cv::VideoCapture capture(video_filename);
+	if(!capture.isOpened()) {
+		std::cout << "Video file could not be opened" << std::endl;
+	}
 
-	std::cout << "!!!Hello World!!!" << std::endl; // prints !!!Hello World!!!
+	// Create window to display video frames
+	cv::namedWindow("AdReal",1);
+	// Process each video frame
+	cv::Mat frame;
+	while(1) {
+		capture >> frame;
+		if(frame.empty()) {
+			std::cout << "Finished processing the video" << std::endl;
+			break;
+		}
+		cv::imshow("AdReal",frame);
+		cv::waitKey(1);
+	}
 	return 0;
 }
