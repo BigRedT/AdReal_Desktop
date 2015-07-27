@@ -28,10 +28,12 @@ public:
 		epsilon = 0.01;
 		flags = 0 + cv::OPTFLOW_LK_GET_MIN_EIGENVALS;
 		minEigThresh = 0;
+		currPts_ = NULL;
+		trackStatus_ = NULL;
 	}
 
-	void trackPoints(cv::Mat &prevImg, std::vector<cv::Point> &prevPts,
-					 cv::Mat &currImg, std::vector<cv::Point> &currPts, std::vector<uchar> &trackStatus);
+	void trackPoints(const cv::Mat &prevImg, const std::vector<cv::Point> &prevPts,
+					 const cv::Mat &currImg, std::vector<cv::Point> &currPts, std::vector<uchar> &trackStatus);
 };
 
 #endif

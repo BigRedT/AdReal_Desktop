@@ -1,7 +1,7 @@
 #include "tracker.hpp"
 
-void Tracker::trackPoints(cv::Mat &prevImg, std::vector<cv::Point> &prevPts,
-		 	 	 	 	  cv::Mat &currImg, std::vector<cv::Point> &currPts, std::vector<uchar> &trackStatus) {
+void Tracker::trackPoints(const cv::Mat &prevImg, const std::vector<cv::Point> &prevPts,
+		 	 	 	 	  const cv::Mat &currImg, std::vector<cv::Point> &currPts, std::vector<uchar> &trackStatus) {
 	std::vector<double> err;
 	cv::Size winSize = cv::Size(this->windowSize, this->windowSize);
 	cv::TermCriteria criteria = cv::TermCriteria(cv::TermCriteria::COUNT+cv::TermCriteria::EPS, this->maxIterations, this->epsilon);
