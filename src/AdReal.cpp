@@ -29,9 +29,9 @@ int main() {
 
 	// kalman filter
 	KalmanFilter KF(8, 8, 8);  //numState, numMeasure, numControl
-	setIdentity(KF.measurementMatrix);
-	setIdentity(KF.transitionMatrix);
-	setIdentity(KF.controlMatrix);
+	setIdentity(KF.measurementMatrix); //C
+	setIdentity(KF.transitionMatrix);  //A
+	setIdentity(KF.controlMatrix); //B
 	KF.processNoiseCov = Mat::eye(8, 8, CV_32F) * 0.001;
 	KF.measurementNoiseCov = Mat::eye(8, 8, CV_32F) * 0.00001;
 
