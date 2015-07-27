@@ -4,7 +4,6 @@
 #include <vector>
 #include <opencv2/video.hpp>
 #include <opencv2/video/tracking.hpp>
-#include <opencv2/optflow.hpp>
 
 class Tracker {
 
@@ -28,8 +27,8 @@ public:
 		epsilon = 0.01;
 		flags = 0 + cv::OPTFLOW_LK_GET_MIN_EIGENVALS;
 		minEigThresh = 0;
-		currPts_ = NULL;
-		trackStatus_ = NULL;
+		currPts_ = 0;
+		trackStatus_ = 0;
 	}
 
 	void trackPoints(const cv::Mat &prevImg, const std::vector<cv::Point> &prevPts,
