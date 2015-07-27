@@ -33,9 +33,4 @@ void testCorner() {
 	waitKey(0);
 }
 
-int main() {
-	testCorner();
-	return (0);
-}
-
 
