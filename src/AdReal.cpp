@@ -69,7 +69,7 @@ int main() {
 		}
 		cvtColor(frame_c, frame, COLOR_BGR2GRAY);
 
-		if (count < 100) {
+		if (count < 20) {
 			// run tracker
 			tracker.trackPoints(preFrame, inPts, frame, outPts, status);
 			for (int i = 0; i < (int) (inPts.size()); i++) {
@@ -84,7 +84,7 @@ int main() {
 		} else {
 			// run detector
 			for (int i = 0; i < (int) (inPts.size()); i++) {
-				detector.detectCorner(frame, inPts[i], 5, outPts[i]);
+				detector.detectCorner(frame, inPts[i], 10, outPts[i]);
 				measure.at<float>(i * 2, 0) = outPts[i].x;
 				measure.at<float>(i * 2 + 1, 0) = outPts[i].y;
 			}

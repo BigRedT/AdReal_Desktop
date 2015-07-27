@@ -16,7 +16,7 @@ void CornerDetector::detectCorner(const Mat& img, const Point2f& searchCenter,
 	Point min_loc, max_loc;
 	minMaxLoc(dst, &min, &max, &min_loc, &max_loc);
 
-	searchResult.x = searchCenter.x + max_loc.x;
-	searchResult.y = searchCenter.y + max_loc.y;
+	searchResult.x = searchCenter.x - searchSize + max_loc.x;
+	searchResult.y = searchCenter.y - searchSize + max_loc.y;
 
 }
