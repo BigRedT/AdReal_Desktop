@@ -16,7 +16,6 @@ private:
 	int flags;
 	double minEigThresh;
 
-
 public:
 	std::vector<cv::Point> *currPts_;
 	std::vector<uchar> *trackStatus_;
