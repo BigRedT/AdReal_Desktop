@@ -33,7 +33,7 @@ int main() {
 	setIdentity(KF.transitionMatrix);  //A
 	setIdentity(KF.controlMatrix); //B
 	KF.processNoiseCov = Mat::eye(8, 8, CV_32F) * 0.001;
-	KF.measurementNoiseCov = Mat::eye(8, 8, CV_32F) * 0.001;
+	KF.measurementNoiseCov = Mat::eye(8, 8, CV_32F) * 0.5;
 
 	Mat delta(8, 1, CV_32F);
 	Mat measure(8, 1, CV_32F);
@@ -49,16 +49,21 @@ int main() {
 	inPts.push_back(Point2f(1470, 796));
 	inPts.push_back(Point2f(986, 774));
 
-	// init kF state
-	for (int i = 0; i < (int) (inPts.size()); i++) {
-		KF.statePost.at<float>(2*i,0) = inPts[i].x;
-		KF.statePost.at<float>(2*i+1,0) = inPts[i].y;
-	}
-
 	// Process each video frame
 	Mat frame_c, frame, preFrame_c, preFrame;
 	capture >> preFrame_c;
 	cvtColor(preFrame_c, preFrame, COLOR_BGR2GRAY);
+
+	// Refine the initial points
+	for (int i = 0; i < (int) (inPts.size()); i++) {
+		detector.detectCorner(preFrame, inPts[i], 10, inPts[i]);
+	}
+
+	// init kF state
+	for (int i = 0; i < (int) (inPts.size()); i++) {
+		KF.statePost.at<float>(2 * i, 0) = inPts[i].x;
+		KF.statePost.at<float>(2 * i + 1, 0) = inPts[i].y;
+	}
 
 	int count = 0;
 	while (1) {
