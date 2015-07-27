@@ -39,15 +39,15 @@ int main() {
 	Mat measure(8, 1, CV_32F);
 
 	// points
-	vector<Point> inPts;
-	vector<Point> outPts;
+	vector<Point2f> inPts;
+	vector<Point2f> outPts;
 	vector<uchar> status;
 
 	// init tracking point
-	inPts.push_back(Point(1016,166));
-	inPts.push_back(Point(1480,158));
-	inPts.push_back(Point(1470,796));
-	inPts.push_back(Point(986,774));
+	inPts.push_back(Point2f(1016,166));
+	inPts.push_back(Point2f(1480,158));
+	inPts.push_back(Point2f(1470,796));
+	inPts.push_back(Point2f(986,774));
 
 	// Process each video frame
 	Mat frame_c, frame, preFrame_c, preFrame;

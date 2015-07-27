@@ -3,8 +3,8 @@
 
 using namespace cv;
 
-void CornerDetector::detectCorner(const Mat& img, const Point& searchCenter,
-								  const int searchSize, Point& searchResult) {
+void CornerDetector::detectCorner(const Mat& img, const Point2f& searchCenter,
+								  const int searchSize, Point2f& searchResult) {
 
 	Mat patch = img.colRange(searchCenter.x - searchSize, searchCenter.x + searchSize)
 				.rowRange(searchCenter.y - searchSize, searchCenter.y + searchSize);

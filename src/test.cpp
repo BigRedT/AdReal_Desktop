@@ -7,7 +7,7 @@ using namespace cv;
 
 void testCorner() {
 	Mat src, src_gray;
-	Point center(300, 200), out;
+	Point2f center(300, 200), out;
 	int searchRadius = 100;
 
 	// Load source image and convert it to gray

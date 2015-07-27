@@ -8,8 +8,8 @@ using namespace cv;
 class CornerDetector {
 
 public:
-	void detectCorner(const Mat& img, const Point& searchCenter,
-					  const int searchSize, Point& searchResult);
+	void detectCorner(const Mat& img, const Point2f& searchCenter,
+					  const int searchSize, Point2f& searchResult);
 
 private:
 	int blockSize = 2;

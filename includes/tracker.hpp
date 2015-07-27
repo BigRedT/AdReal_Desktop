@@ -16,7 +16,7 @@ private:
 	double minEigThresh;
 
 public:
-	std::vector<cv::Point> *currPts_;
+	std::vector<cv::Point2f> *currPts_;
 	std::vector<uchar> *trackStatus_;
 
 public:
@@ -31,8 +31,8 @@ public:
 		trackStatus_ = 0;
 	}
 
-	void trackPoints(const cv::Mat &prevImg, const std::vector<cv::Point> &prevPts,
-					 const cv::Mat &currImg, std::vector<cv::Point> &currPts, std::vector<uchar> &trackStatus);
+	void trackPoints(const cv::Mat &prevImg, const std::vector<cv::Point2f> &prevPts,
+					 const cv::Mat &currImg, std::vector<cv::Point2f> &currPts, std::vector<uchar> &trackStatus);
 };
 
 #endif
