@@ -20,7 +20,7 @@ int main() {
 	}
 
 	// Create window to display video frames
-	cv::namedWindow("AdReal", WINDOW_NORMAL);
+	cv::namedWindow("AdReal", WINDOW_AUTOSIZE);
 
 	// detector
 	CornerDetector detector;
@@ -33,7 +33,7 @@ int main() {
 	setIdentity(KF.transitionMatrix);  //A
 	setIdentity(KF.controlMatrix); //B
 	KF.processNoiseCov = Mat::eye(8, 8, CV_32F) * 0.001;
-	KF.measurementNoiseCov = Mat::eye(8, 8, CV_32F) * 0.00001;
+	KF.measurementNoiseCov = Mat::eye(8, 8, CV_32F) * 0.001;
 
 	Mat delta(8, 1, CV_32F);
 	Mat measure(8, 1, CV_32F);
@@ -44,10 +44,16 @@ int main() {
 	vector<uchar> status;
 
 	// init tracking point
-	inPts.push_back(Point2f(1016,166));
-	inPts.push_back(Point2f(1480,158));
-	inPts.push_back(Point2f(1470,796));
-	inPts.push_back(Point2f(986,774));
+	inPts.push_back(Point2f(1016, 166));
+	inPts.push_back(Point2f(1480, 158));
+	inPts.push_back(Point2f(1470, 796));
+	inPts.push_back(Point2f(986, 774));
+
+	// init kF state
+	for (int i = 0; i < (int) (inPts.size()); i++) {
+		KF.statePost.at<float>(2*i,0) = inPts[i].x;
+		KF.statePost.at<float>(2*i+1,0) = inPts[i].y;
+	}
 
 	// Process each video frame
 	Mat frame_c, frame, preFrame_c, preFrame;
@@ -63,10 +69,10 @@ int main() {
 		}
 		cvtColor(frame_c, frame, COLOR_BGR2GRAY);
 
-		if (count < 50) {
+		if (count < 100) {
 			// run tracker
 			tracker.trackPoints(preFrame, inPts, frame, outPts, status);
-			for (int i = 0; i < (int)(inPts.size()); i++) {
+			for (int i = 0; i < (int) (inPts.size()); i++) {
 				delta.at<float>(i * 2, 0) = outPts[i].x - inPts[i].x;
 				delta.at<float>(i * 2 + 1, 0) = outPts[i].y - inPts[i].y;
 			}
@@ -77,10 +83,10 @@ int main() {
 
 		} else {
 			// run detector
-			for (int i=0; i < (int)(inPts.size()); i++) {
-				detector.detectCorner(frame,inPts[i], 50, outPts[i]);
-				measure.at<float>(i*2, 0) = outPts[i].x;
-				measure.at<float>(i*2+1,0) = outPts[i].y;
+			for (int i = 0; i < (int) (inPts.size()); i++) {
+				detector.detectCorner(frame, inPts[i], 5, outPts[i]);
+				measure.at<float>(i * 2, 0) = outPts[i].x;
+				measure.at<float>(i * 2 + 1, 0) = outPts[i].y;
 			}
 
 			// kalman corrector
@@ -89,13 +95,13 @@ int main() {
 		}
 
 		// update the inpts
-		for (int i = 0; i <(int)(inPts.size()); i++) {
+		for (int i = 0; i < (int) (inPts.size()); i++) {
 			inPts[i].x = KF.statePost.at<float>(i * 2, 0);
 			inPts[i].y = KF.statePost.at<float>(i * 2 + 1, 0);
 		}
 
 		// visualize the point
-		for (int i = 0; i <(int)(inPts.size()); i++) {
+		for (int i = 0; i < (int) (inPts.size()); i++) {
 			circle(frame, inPts[i], 3, Scalar(0, 255, 0), 2, 8, 0);
 		}
 
@@ -104,7 +110,7 @@ int main() {
 		cv::waitKey(1);
 
 		// pre
-		preFrame = frame;
+		preFrame = frame.clone();
 		count++;
 	}
 	return 0;
