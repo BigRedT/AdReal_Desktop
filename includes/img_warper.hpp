@@ -10,8 +10,8 @@
 class ImgWarper {
 public:
 	cv::Mat ad;
-	std::vector<cv::Point> dst_rect_corners;
-	std::vector<cv::Point> src_rect_corners;
+	std::vector<cv::Point2f> dst_rect_corners;
+	std::vector<cv::Point2f> src_rect_corners;
 	cv::Mat_<double> H;
 
 public:
@@ -22,11 +22,11 @@ public:
 		int X[] = {0, ad.cols, ad.cols, 0};
 		int Y[] = {0, 0, ad.rows, ad.rows};
 		for(int i= 0; i < 4; i++) {
-			dst_rect_corners.push_back(cv::Point(X[i],Y[i]));
+			dst_rect_corners.push_back(cv::Point2f(X[i],Y[i]));
 		}
 	}
 
-	void computeHomograpy(const std::vector<cv::Point> &src_rect_corners_);
+	void computeHomograpy(const std::vector<cv::Point2f> &src_rect_corners_);
 
 	void embedAd(const cv::Mat &img, cv::Mat &ad_img);
 
