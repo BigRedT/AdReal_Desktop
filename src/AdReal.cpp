@@ -1,5 +1,6 @@
 #include "test.hpp"
 #include "tracking_engine.hpp"
+#include "misc.hpp"
 #include <iostream>
 #include <vector>
 #include <opencv2/highgui.hpp>
@@ -27,11 +28,26 @@ int main() {
 	capture >> frame_c;
 	cvtColor(frame_c, frame, COLOR_BGR2GRAY);
 
+	std::vector<cv::Point2f> unorderedPts, orderedPts;
+	unorderedPts.push_back(Point2f(1016, 166));
+	unorderedPts.push_back(Point2f(1480, 158));
+	unorderedPts.push_back(Point2f(1470, 796));
+	unorderedPts.push_back(Point2f(986, 774));
+
+	sortPtsClockwise(unorderedPts, orderedPts);
+	for(int i=0; i<4; i++) {
+		std::cout << orderedPts.at(i) << std::endl;
+	}
+
+
+
+
 	// init tracking point
 	engine.addTrackingPoint(Point2f(1016, 166),frame);
 	engine.addTrackingPoint(Point2f(1480, 158),frame);
 	engine.addTrackingPoint(Point2f(1470, 796),frame);
 	engine.addTrackingPoint(Point2f(986, 774) ,frame);
+
 
 	// output points
 	vector<Point2f> points;
