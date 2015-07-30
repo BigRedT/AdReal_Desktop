@@ -10,11 +10,12 @@ TrackingEngine::TrackingEngine() {
 	setIdentity(KF.measurementMatrix); //C
 	setIdentity(KF.transitionMatrix);  //A
 	setIdentity(KF.controlMatrix); //B
-	KF.processNoiseCov = Mat::eye(8, 8, CV_32F) * 0.001;
-	KF.measurementNoiseCov = Mat::eye(8, 8, CV_32F) * 0.5;
+	KF.processNoiseCov = Mat::eye(8, 8, CV_32F) * 0.01;
+	KF.measurementNoiseCov = Mat::eye(8, 8, CV_32F) * 0.001;
 
 	//others
 	count = 0;
+	isFirstFrame = true;
 	points.clear();
 }
 
@@ -35,10 +36,17 @@ bool TrackingEngine::addTrackingPoint(const Point2f& point, const Mat& frame) {
 	return true;
 }
 
-bool TrackingEngine::trackAllPoints(
-		const Mat& cFrame, const Mat& pFrame,
-		std::vector<Point2f>& outPoints)
+bool TrackingEngine::trackAllPoints(const Mat& cFrame, std::vector<Point2f>& outPoints)
 {
+	// check first frame
+	if (isFirstFrame) {
+		isFirstFrame = false;
+		pFrame = cFrame.clone();
+		outPoints = points;
+		return true;
+	}
+
+	// check point size
 	if (points.size() == 0)
 		return true;
 
@@ -80,6 +88,9 @@ bool TrackingEngine::trackAllPoints(
 		outPoints[i].x = KF.statePost.at<float>(i * 2, 0);
 		outPoints[i].y = KF.statePost.at<float>(i * 2 + 1, 0);
 	}
+
+	// copy the frame
+	pFrame = cFrame.clone();
 
 	return true;
 }

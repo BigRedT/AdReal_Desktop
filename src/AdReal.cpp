@@ -23,15 +23,15 @@ int main() {
 	TrackingEngine engine;
 
 	// Process each video frame
-	Mat frame_c, frame, preFrame_c, preFrame;
-	capture >> preFrame_c;
-	cvtColor(preFrame_c, preFrame, COLOR_BGR2GRAY);
+	Mat frame_c, frame;
+	capture >> frame_c;
+	cvtColor(frame_c, frame, COLOR_BGR2GRAY);
 
 	// init tracking point
-	engine.addTrackingPoint(Point2f(1016, 166),preFrame);
-	engine.addTrackingPoint(Point2f(1480, 158),preFrame);
-	engine.addTrackingPoint(Point2f(1470, 796),preFrame);
-	engine.addTrackingPoint(Point2f(986, 774) ,preFrame);
+	engine.addTrackingPoint(Point2f(1016, 166),frame);
+	engine.addTrackingPoint(Point2f(1480, 158),frame);
+	engine.addTrackingPoint(Point2f(1470, 796),frame);
+	engine.addTrackingPoint(Point2f(986, 774) ,frame);
 
 	// output points
 	vector<Point2f> points;
@@ -45,19 +45,16 @@ int main() {
 		cvtColor(frame_c, frame, COLOR_BGR2GRAY);
 
 		//Track!!
-		engine.trackAllPoints(frame,preFrame,points);
+		engine.trackAllPoints(frame,points);
 
 		// visualize the point
 		for (int i = 0; i < (int) (points.size()); i++) {
-			circle(frame, points[i], 3, Scalar(0, 255, 0), 2, 8, 0);
+			circle(frame_c, points[i], 3, Scalar(0, 255, 0), 2, 8, 0);
 		}
 
 		// draw the frame
-		cv::imshow("AdReal", frame);
+		cv::imshow("AdReal", frame_c);
 		cv::waitKey(1);
-
-		// pre
-		preFrame = frame.clone();
 	}
 	return 0;
 }

@@ -15,7 +15,7 @@ public:
 	~TrackingEngine(){};
 
 	bool addTrackingPoint(const Point2f& point, const Mat& frame);
-	bool trackAllPoints(const Mat& cFrame, const Mat& pFrame, std::vector<Point2f>& outPoints);
+	bool trackAllPoints(const Mat& cFrame, std::vector<Point2f>& outPoints);
 
 private:
 	CornerDetector detector;
@@ -24,6 +24,8 @@ private:
 	int count;
 
 	std::vector<Point2f> points;
+	cv::Mat pFrame;
+	bool isFirstFrame;
 };
 
 #endif
