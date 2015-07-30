@@ -1,19 +1,16 @@
 #include "misc.hpp"
 
 
+bool compfun(cv::Point2f a, cv::Point2f b) {
+	return (a.y < b.y);
+};
+
 void sortPtsClockwise(const std::vector<cv::Point2f> &unorderedPts, std::vector<cv::Point2f> &orderedPts) {
 	assert(unorderedPts.size() == 4);
-	int order[4] = {0,1,2,3};
 	int tmp;
-	for(int i=1; i < 4; i++) {
-		for(int j=0; j<i; j++) {
-			if(unorderedPts.at(i).y > unorderedPts.at(j).y) {
-				tmp = order[i];
-				order[i] = order[j];
-				order[j] = tmp;
-			}
-		}
-	}
+	int minIdx, minVal;
+
+	std::sort(unorderedPts.begin(), unorderedPts.end(), compfun);
 
 	// Smaller x of top row goes first
 	if(unorderedPts.at(order[0]).x > unorderedPts.at(order[1]).x) {
