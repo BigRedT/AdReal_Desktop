@@ -1,7 +1,6 @@
 #ifndef _IMG_WARPER_HPP_
 #define _IMG_WARPER_HPP_
 
-#include <iostream>
 #include <vector>
 #include <opencv2/core.hpp>
 #include <opencv2/calib3d.hpp>

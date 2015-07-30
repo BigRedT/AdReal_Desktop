@@ -6,6 +6,6 @@
 #include <algorithm>
 #include <opencv2/core.hpp>
 
-void sortPtsClockwise(const std::vector<cv::Point2f> &unorderedPts, std::vector<cv::Point2f> &orderedPts);
+void sortPtsClockwise(std::vector<cv::Point2f> &unorderedPts, std::vector<cv::Point2f> &orderedPts);
 
 #endif

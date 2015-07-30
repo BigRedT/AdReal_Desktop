@@ -1,5 +1,6 @@
 #include "test.hpp"
 #include "tracking_engine.hpp"
+#include "img_warper.hpp"
 #include "misc.hpp"
 #include <iostream>
 #include <vector>
@@ -23,11 +24,16 @@ int main() {
 	// Create tracking engine
 	TrackingEngine engine;
 
+	// Create image wrapper
+	cv::Mat img = cv::imread("resource/indoor.jpg");
+	ImgWarper warper(img);
+
 	// Process each video frame
-	Mat frame_c, frame;
+	Mat frame_c, frame, frame_i;
 	capture >> frame_c;
 	cvtColor(frame_c, frame, COLOR_BGR2GRAY);
 
+	// init tracking point
 	std::vector<cv::Point2f> unorderedPts, orderedPts;
 	unorderedPts.push_back(Point2f(1016, 166));
 	unorderedPts.push_back(Point2f(1480, 158));
@@ -36,18 +42,8 @@ int main() {
 
 	sortPtsClockwise(unorderedPts, orderedPts);
 	for(int i=0; i<4; i++) {
-		std::cout << orderedPts.at(i) << std::endl;
+		engine.addTrackingPoint(orderedPts[i],frame);
 	}
-
-
-
-
-	// init tracking point
-	engine.addTrackingPoint(Point2f(1016, 166),frame);
-	engine.addTrackingPoint(Point2f(1480, 158),frame);
-	engine.addTrackingPoint(Point2f(1470, 796),frame);
-	engine.addTrackingPoint(Point2f(986, 774) ,frame);
-
 
 	// output points
 	vector<Point2f> points;
@@ -68,9 +64,13 @@ int main() {
 			circle(frame_c, points[i], 3, Scalar(0, 255, 0), 2, 8, 0);
 		}
 
+		// compute the homo
+		warper.computeHomograpy(points);
+		warper.embedAd(frame_c, frame_i);
+
 		// draw the frame
-		cv::imshow("AdReal", frame_c);
-		cv::waitKey(1);
+		//cv::imshow("AdReal", frame_i);
+		//cv::waitKey(1);
 	}
 	return 0;
 }
