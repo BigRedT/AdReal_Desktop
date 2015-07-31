@@ -18,7 +18,7 @@ void ImgWarper::embedAd(const cv::Mat &img, cv::Mat &embededAd) {
 	//cv::waitKey(1);
 
 	// create a binary mask
-	cv::Mat mask = cv::Mat::zeros(cv::Size(img.rows, img.cols),CV_8UC1);
+	cv::Mat mask = cv::Mat::zeros(cv::Size(img.cols,img.rows),CV_8UC1);
 
 	cv::Point points[4];
 	for(int i=0; i < 4; i++) {
@@ -36,10 +36,15 @@ void ImgWarper::embedAd(const cv::Mat &img, cv::Mat &embededAd) {
 	embededAd = img.clone();
 	for(int i=0; i < mask.rows; i++) {
 		for(int j=0; j < mask.cols; j++) {
-			if(mask.at<uchar>(i,j)==1) {
-				embededAd.at<cv::Vec3b>(i,j) == ad_img.at<cv::Vec3b>(i,j);
+			if(mask.at<uchar>(i,j)==(uchar)1) {
+				embededAd.at<cv::Vec3b>(i,j) = ad_img.at<cv::Vec3b>(i,j);
 			}
 		}
 	}
+
+	std::cout << "Img: " << img.rows << std::endl;
+	std::cout << "mask: " << mask.rows << std::endl;
+	cv::imshow("AdReal",embededAd);
+			cv::waitKey(1);
 }
 

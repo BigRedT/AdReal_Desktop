@@ -23,7 +23,7 @@ JNIEXPORT jfloatArray JNICALL Java_a9_com_a9adsrealandroid_VideoRegionSelectActi
 
 	// convert array
 	jbyte* jbae = env->GetByteArrayElements(jframe, 0);
-	Mat frame(height + height / 2, width, CV_8UC1, (unsigned char *) jbae);
+	Mat frame(height + height / 2, width, CV_8UC3, (unsigned char *) jbae);
 	Mat frame_g;
 	cvtColor(frame, frame_g, COLOR_YUV2GRAY_420);
 

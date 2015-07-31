@@ -9,7 +9,18 @@
 using namespace cv;
 using std::vector;
 
+void onMouse(int evt, int x, int y, int flags, void* param) {
+    if(evt == CV_EVENT_LBUTTONDOWN) {
+        std::vector<cv::Point>* ptPtr = (std::vector<cv::Point>*)param;
+        ptPtr->push_back(cv::Point(x,y));
+    }
+}
+
+
+
 int runEngine() {
+
+
 	// read video
 	const std::string video_filename = "resource/video_simple.mp4";
 	cv::VideoCapture capture(video_filename);
@@ -20,6 +31,7 @@ int runEngine() {
 
 	// Create window to display video frames
 	cv::namedWindow("AdReal", WINDOW_AUTOSIZE);
+
 
 	// Create tracking engine
 	TrackingEngine engine;
@@ -66,12 +78,12 @@ int runEngine() {
 		}
 
 		// compute the homo
-		//warper.computeHomograpy(points);
-		//warper.embedAd(frame_c, frame_i);
+		warper.computeHomograpy(points);
+		warper.embedAd(frame_c, frame_i);
 
 		// draw the frame
-		cv::imshow("AdReal", frame_c);
-		cv::waitKey(1);
+		//cv::imshow("AdReal", frame_i);
+		//cv::waitKey(1);
 	}
 	return 0;
 }

@@ -18,8 +18,8 @@ public:
 		ad = ad_.clone();
 
 		// Set the target rectangle corners
-		int X[] = {0, ad.cols, ad.cols, 0};
-		int Y[] = {0, 0, ad.rows, ad.rows};
+		int X[] = {5, ad.cols-5, ad.cols-5, 5};
+		int Y[] = {5, 5, ad.rows-5, ad.rows-5};
 		for(int i= 0; i < 4; i++) {
 			dst_rect_corners.push_back(cv::Point2f(X[i],Y[i]));
 		}
