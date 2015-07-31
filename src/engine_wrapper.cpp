@@ -24,10 +24,12 @@ JNIEXPORT jfloatArray JNICALL Java_a9_com_a9adsrealandroid_VideoRegionSelectActi
 	// convert array
 	jbyte* jbae = env->GetByteArrayElements(jframe, 0);
 	Mat frame(height + height / 2, width, CV_8UC1, (unsigned char *) jbae);
+	Mat frame_g;
+	cvtColor(frame, frame_g, COLOR_YUV2GRAY_420);
 
 	// ivoke engine
 	cv::Point2f corrected;
-	engine.addTrackingPoint(cvPoint, frame, corrected);
+	engine.addTrackingPoint(cvPoint, frame_g, corrected);
 
 	// return
 	jfloatArray newArray = env->NewFloatArray(cvPoints.size());
@@ -52,10 +54,12 @@ JNIEXPORT jfloatArray JNICALL Java_a9_com_a9adsrealandroid_VideoRegionSelectActi
 	// convert jcframe
 	jbyte* jbae = env->GetByteArrayElements(jcframe, 0);
 	Mat frame(height + height / 2, width, CV_8UC1, (unsigned char *) jbae);
+	Mat frame_g;
+	cvtColor(frame, frame_g, COLOR_YUV2GRAY_420);
 
 	// invoke engine
 	std::vector<Point2f> cvPoints;
-	engine.trackAllPoints(frame, cvPoints);
+	engine.trackAllPoints(frame_g, cvPoints);
 
 	// return
 	jfloatArray newArray = env->NewFloatArray(cvPoints.size());
