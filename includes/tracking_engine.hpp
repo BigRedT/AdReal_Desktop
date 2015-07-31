@@ -14,7 +14,7 @@ public:
 	TrackingEngine();
 	~TrackingEngine(){};
 
-	bool addTrackingPoint(const Point2f& point, const Mat& frame);
+	bool addTrackingPoint(const Point2f& point, const Mat& frame, Point2f& corrected);
 	bool trackAllPoints(const Mat& cFrame, std::vector<Point2f>& outPoints);
 
 private:

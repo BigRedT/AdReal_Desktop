@@ -40,9 +40,10 @@ int runEngine() {
 	unorderedPts.push_back(Point2f(1470, 796));
 	unorderedPts.push_back(Point2f(986, 774));
 
+	Point2f corrected;
 	sortPtsClockwise(unorderedPts, orderedPts);
 	for (int i = 0; i < 4; i++) {
-		engine.addTrackingPoint(orderedPts[i], frame);
+		engine.addTrackingPoint(orderedPts[i], frame, corrected);
 	}
 
 	// output points

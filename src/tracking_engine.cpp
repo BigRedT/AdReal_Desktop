@@ -19,12 +19,11 @@ TrackingEngine::TrackingEngine() {
 	points.clear();
 }
 
-bool TrackingEngine::addTrackingPoint(const Point2f& point, const Mat& frame) {
+bool TrackingEngine::addTrackingPoint(const Point2f& point, const Mat& frame, Point2f& corrected) {
 	if (points.size() >= 4)
 		return false;
 
 	// add to point repo
-	Point2f corrected;
 	detector.detectCorner(frame, point, 10, corrected);
 	points.push_back(corrected);
 

@@ -2,21 +2,77 @@
 
 TrackingEngine engine;
 
-bool engine_init() {
-	//engine initialization
-	return true;
+/*
+ * Class:     a9_com_a9adsrealandroid_VideoRegionSelectActivity
+ * Method:    findCornerOnScreen
+ * Signature: (Landroid/graphics/PointF;[B)Landroid/graphics/PointF;
+ */
+// return: PointF
+// input : PointF, byte[]
+JNIEXPORT jfloatArray JNICALL Java_a9_com_a9adsrealandroid_VideoRegionSelectActivity_findCornerOnScreen(
+		JNIEnv *env, jobject obj, jobject jpoint, jbyteArray jframe, jint width,
+		jint height) {
+
+	// convert point
+	cv::Point2f cvPoint;
+	jclass cpoint = env->GetObjectClass(jpoint);
+	jfieldID pointfx = env->GetFieldID(cpoint, "x", "f");
+	jfieldID pointfy = env->GetFieldID(cpoint, "y", "f");
+	cvPoint.x = env->GetFloatField(jpoint, pointfx);
+	cvPoint.y = env->GetFloatField(jpoint, pointfy);
+
+	// convert array
+	jbyte* jbae = env->GetByteArrayElements(jframe, 0);
+	Mat frame(height + height / 2, width, CV_8UC1, (unsigned char *) jbae);
+
+	// ivoke engine
+	cv::Point2f corrected;
+	engine.addTrackingPoint(cvPoint, frame, corrected);
+
+	// return
+	jfloatArray newArray = env->NewFloatArray(cvPoints.size());
+	jfloat *narr = env->GetIntArrayElements(newArray,NULL);
+	narr[0] = corrected.x;
+	narr[1] = corrected.y;
+	return newArray;
 }
 
-bool engine_addPoints() {
-	cv::Point2f point;
-	cv::Mat frame;
-	engine.addTrackingPoint(point, frame);
-	return true;
+/*
+ * Class:     a9_com_a9adsrealandroid_VideoRegionSelectActivity
+ * Method:    trackingPoint
+ * Signature: (Ljava/util/ArrayList;[B[B)Ljava/util/ArrayList;
+ */
+// return: ArrayList<PointF>
+// input : ArrayList<PointF>, preFrame, curFrame
+JNIEXPORT jfloatArray JNICALL Java_a9_com_a9adsrealandroid_VideoRegionSelectActivity_trackingPoint(
+		JNIEnv *, jobject, jfloatArray jpoints, jbyteArray jpframe,
+		jbyteArray jcframe, jint width, jint height) {
+
+	// ignore jpframe, jpoints
+	// convert jcframe
+	jbyte* jbae = env->GetByteArrayElements(jcframe, 0);
+	Mat frame(height + height / 2, width, CV_8UC1, (unsigned char *) jbae);
+
+	// invoke engine
+	std::vector<Point2f> cvPoints;
+	engine.trackAllPoints(frame, cvPoints);
+
+	// return
+	jfloatArray newArray = env->NewFloatArray(cvPoints.size());
+	jfloat *narr = env->GetIntArrayElements(newArray, NULL);
+	for (int i = 0; i < cvPoints.size(); i++) {
+		narr[2 * i] = cvPoints[i].x;
+		narr[2 * i + 1] = cvPoints[i].y;
+	}
+	return newArray;
 }
 
-bool engine_trackPoints() {
-	std::vector<Point2f> points;
-	cv::Mat frame;
-	engine.trackAllPoints(frame, points);
-	return true;
+/*
+ * Class:     a9_com_a9adsrealandroid_VideoRegionSelectActivity
+ * Method:    init
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_a9_com_a9adsrealandroid_VideoRegionSelectActivity_init
+(JNIEnv *, jobject) {
+	// do nothing for now
 }
