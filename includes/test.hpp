@@ -3,4 +3,6 @@
 
 void testCorner();
 
+void testRect();
+
 #endif

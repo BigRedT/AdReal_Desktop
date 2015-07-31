@@ -14,8 +14,8 @@ void ImgWarper::embedAd(const cv::Mat &img, cv::Mat &embededAd) {
 
 	cv::Mat ad_img;
 	cv::warpPerspective(ad, ad_img, H, img.size(), cv::WARP_INVERSE_MAP, cv::BORDER_CONSTANT, cv::Scalar(0,0,0));
-	cv::imshow("AdReal",ad_img);
-	cv::waitKey(1);
+	//cv::imshow("AdReal",ad_img);
+	//cv::waitKey(1);
 
 	// create a binary mask
 	cv::Mat mask = cv::Mat::zeros(cv::Size(img.rows, img.cols),CV_8UC1);

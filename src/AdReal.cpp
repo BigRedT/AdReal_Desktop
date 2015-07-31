@@ -9,7 +9,7 @@
 using namespace cv;
 using std::vector;
 
-int main() {
+int runEngine() {
 	// read video
 	const std::string video_filename = "resource/video_simple.mp4";
 	cv::VideoCapture capture(video_filename);
@@ -41,8 +41,8 @@ int main() {
 	unorderedPts.push_back(Point2f(986, 774));
 
 	sortPtsClockwise(unorderedPts, orderedPts);
-	for(int i=0; i<4; i++) {
-		engine.addTrackingPoint(orderedPts[i],frame);
+	for (int i = 0; i < 4; i++) {
+		engine.addTrackingPoint(orderedPts[i], frame);
 	}
 
 	// output points
@@ -57,7 +57,7 @@ int main() {
 		cvtColor(frame_c, frame, COLOR_BGR2GRAY);
 
 		//Track!!
-		engine.trackAllPoints(frame,points);
+		engine.trackAllPoints(frame, points);
 
 		// visualize the point
 		for (int i = 0; i < (int) (points.size()); i++) {
@@ -65,12 +65,19 @@ int main() {
 		}
 
 		// compute the homo
-		warper.computeHomograpy(points);
-		warper.embedAd(frame_c, frame_i);
+		//warper.computeHomograpy(points);
+		//warper.embedAd(frame_c, frame_i);
 
 		// draw the frame
-		//cv::imshow("AdReal", frame_i);
-		//cv::waitKey(1);
+		cv::imshow("AdReal", frame_c);
+		cv::waitKey(1);
 	}
 	return 0;
+}
+
+int main() {
+	return runEngine();
+
+	//testCorner();
+	//testRect();
 }

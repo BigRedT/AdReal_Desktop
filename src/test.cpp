@@ -1,4 +1,5 @@
 #include "corner_detector.hpp"
+#include "misc.hpp"
 #include <iostream>
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
@@ -33,4 +34,39 @@ void testCorner() {
 	waitKey(0);
 }
 
+void testRect() {
+	Mat src, src_gray;
+
+	// Load source image and convert it to gray
+	src = imread("resource/s1.png", 1);
+	cvtColor(src, src_gray, COLOR_BGR2GRAY);
+
+	// detect rectangles
+	std::vector<quad> quads;
+	findRectangles(src_gray, quads);
+	std::cout << quads.size() << std::endl;
+
+	// create array of array of points
+	cv::Point **quadPts = new cv::Point* [quads.size()];
+	int *npts = new int [quads.size()];
+	for(int i=0; i<(int)quads.size(); i++) {
+		npts[i] = 4;
+		quadPts[i] = new cv::Point [4];
+		for(int j=0; j<4; j++) {
+			quadPts[i][j] = quads[i].points[j];
+		}
+	}
+
+	//const int npts_[] = {npts};
+	//const cv::Point2f *pts[] = {quadPts};
+
+	// draw quads;
+	cv::polylines(src, quadPts, npts, quads.size(), true, Scalar(0,255,0), 3, LINE_AA);
+
+	// show
+	namedWindow("Rectangle", WINDOW_AUTOSIZE);
+	imshow("Rectangle", src);
+	waitKey(0);
+
+}
 
